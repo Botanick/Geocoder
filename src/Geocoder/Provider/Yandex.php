@@ -31,6 +31,14 @@ class Yandex extends AbstractHttpProvider implements LocaleAwareProvider
      */
     const REVERSE_ENDPOINT_URL = 'https://geocode-maps.yandex.ru/1.x/?format=json&geocode=%F,%F';
 
+    private $accuracyMapping = [
+        'exact' => 1,
+        'number' => 0.9,
+        'near' => 0.7,
+        'street' => 0.5,
+        'other' => 0.2,
+    ];
+
     /**
      * @var string
      */
@@ -146,6 +154,8 @@ class Yandex extends AbstractHttpProvider implements LocaleAwareProvider
             $results[] = array_merge($this->getDefaults(), array(
                 'latitude'     => (float) $coordinates[1],
                 'longitude'    => (float) $coordinates[0],
+                'accuracy'     => isset($details['precision'], $this->accuracyMapping[$details['precision']]) ? $this->accuracyMapping[$details['precision']] : 0.0,
+                'providerAccuracy' => isset($details['precision']) ? $details['precision'] : null,
                 'bounds'       => $bounds,
                 'streetNumber' => isset($details['PremiseNumber']) ? $details['PremiseNumber'] : null,
                 'streetName'   => isset($details['ThoroughfareName']) ? $details['ThoroughfareName'] : null,

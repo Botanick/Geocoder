@@ -34,6 +34,13 @@ class GoogleMaps extends AbstractHttpProvider implements LocaleAwareProvider
 
     use LocaleTrait;
 
+    private $accuracyMapping = [
+        'ROOFTOP' => 1,
+        'RANGE_INTERPOLATED' => 0.8,
+        'GEOMETRIC_CENTER' => 0.5,
+        'APPROXIMATE' => 0.2,
+    ];
+
     /**
      * @var string
      */
@@ -188,6 +195,11 @@ class GoogleMaps extends AbstractHttpProvider implements LocaleAwareProvider
             $coordinates = $result->geometry->location;
             $resultSet['latitude']  = $coordinates->lat;
             $resultSet['longitude'] = $coordinates->lng;
+
+            $resultSet['providerAccuracy'] = $result->geometry->location_type;
+            if (isset($this->accuracyMapping[$result->geometry->location_type])) {
+                $resultSet['accuracy'] = $this->accuracyMapping[$result->geometry->location_type];
+            }
 
             $resultSet['bounds'] = null;
             if (isset($result->geometry->bounds)) {

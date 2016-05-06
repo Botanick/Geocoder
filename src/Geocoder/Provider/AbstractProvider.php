@@ -62,6 +62,8 @@ abstract class AbstractProvider
         return [
             'latitude'     => null,
             'longitude'    => null,
+            'accuracy'     => 0.0,
+            'providerAccuracy' => null,
             'bounds'       => [
                 'south' => null,
                 'west'  => null,

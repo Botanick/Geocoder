@@ -21,6 +21,11 @@ final class Address
     private $coordinates;
 
     /**
+     * @var Accuracy
+     */
+    private $accuracy;
+
+    /**
      * @var Bounds
      */
     private $bounds;
@@ -66,14 +71,21 @@ final class Address
     private $timezone;
 
     /**
+     * @param Coordinates $coordinates
+     * @param Accuracy $accuracy
+     * @param Bounds $bounds
      * @param string $streetNumber
      * @param string $streetName
      * @param string $postalCode
      * @param string $locality
      * @param string $subLocality
+     * @param AdminLevelCollection $adminLevels
+     * @param Country $country
+     * @param null $timezone
      */
     public function __construct(
         Coordinates $coordinates          = null,
+        Accuracy $accuracy                = null,
         Bounds $bounds                    = null,
         $streetNumber                     = null,
         $streetName                       = null,
@@ -85,6 +97,7 @@ final class Address
         $timezone                         = null
     ) {
         $this->coordinates  = $coordinates;
+        $this->accuracy     = $accuracy;
         $this->bounds       = $bounds;
         $this->streetNumber = $streetNumber;
         $this->streetName   = $streetName;
@@ -132,6 +145,16 @@ final class Address
         }
 
         return $this->coordinates->getLongitude();
+    }
+
+    /**
+     * Returns address accuracy
+     *
+     * @return Accuracy
+     */
+    public function getAccuracy()
+    {
+        return $this->accuracy;
     }
 
     /**
@@ -253,6 +276,7 @@ final class Address
         return array(
             'latitude'     => $this->getLatitude(),
             'longitude'    => $this->getLongitude(),
+            'accuracy'     => $this->accuracy->toArray(),
             'bounds'       => $this->bounds->toArray(),
             'streetNumber' => $this->streetNumber,
             'streetName'   => $this->streetName,

@@ -38,6 +38,10 @@ final class AddressFactory
                     $this->readDoubleValue($result, 'latitude'),
                     $this->readDoubleValue($result, 'longitude')
                 ),
+                new Accuracy(
+                    $this->readDoubleValue($result, 'accuracy'),
+                    $this->readStringValue($result, 'providerAccuracy')
+                ),
                 new Bounds(
                     $this->readDoubleValue($result, 'bounds.south'),
                     $this->readDoubleValue($result, 'bounds.west'),
